@@ -71,7 +71,7 @@ Votre fichier `package.json` devrait ressembler à ceci :
   "author": "Jane Doe",
   "license": "MIT"
 }
-
+```
 
 Ensuite, installez le package `electron` dans les `devDependencies` de votre application.
 
@@ -129,7 +129,7 @@ Pour initialiser le script `main`, créez un fichier vide nommé `main.js` dans 
 Pour tester rapidement si votre fichier `main.js` est correctement connecté, vous pouvez ajouter une ligne de code simple comme celle-ci :
 
 ```js
-console.log('Script principal initialisé !');
+console.log('ça marche');
 ```
 
 
@@ -145,18 +145,18 @@ Pour ce tutoriel, vous allez faire la première option. Créez un fichier `index
 
 ```html
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
   <head>
     <meta charset="UTF-8">
-    <!-- https://developer.mozilla.org/fr/docs/Web/HTTP/CSP -->
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <title>Bonjour le monde !</title></title>
+    <title>Hello World!</title>
   </head>
   <body>
-    <h1>Bonjour le monde !</h1>
-    Nous utilisons Node.js <span id="node-version"></span>,
+    <h1>Hello World!</h1>
+    We are using Node.js <span id="node-version"></span>,
     Chromium <span id="chrome-version"></span>,
-    et Electron <span id="electron-version"></span>.
+    and Electron <span id="electron-version"></span>.
   </body>
 </html>
 ```
@@ -193,7 +193,6 @@ const createWindow = () => {
     height: 600
   })
 
-
   win.loadFile('index.html')
 }
 ```
@@ -206,8 +205,8 @@ Dans Electron, les fenêtres de navigateur ne peuvent être créées qu'après q
 
 
 ```js @ts-type={createWindow:()=>void}
-app.lorsquePrêt().alors(() => {
-  créerFenêtre()
+app.whenReady().then(() => {
+  createWindow()
 })
 ```
 
@@ -215,11 +214,7 @@ app.lorsquePrêt().alors(() => {
 > Remarque : À ce stade, votre application Electron devrait ouvrir avec succès une fenêtre affichant votre page web !
 
 
-[app] : ../api/app.md
-[fenêtre-du-navigateur]: ../api/browser-window.md
-[commonjs]: https://nodejs.org/docs/latest/api/modules.html#modules_modules_commonjs_modules
-[app-ready]: ../api/app.md#event-ready
-[app-when-ready]: ../api/app.md#appwhenready
+
 
 
 ### Gérer le cycle de vie de votre fenêtre
@@ -241,8 +236,8 @@ Pour implémenter cela, écoutez l'événement [`'window-all-closed'`] du module
 
 
 ```js
-app.on('window-all-closed', () => {
-  si (process.platform !== 'darwin') app.quit()
+aapp.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') app.quit()
 })
 ```
 #### Ouvrez une fenêtre si aucune n'est ouverte (macOS)
@@ -260,12 +255,11 @@ Parce que les fenêtres ne peuvent pas être créées avant l'événement `ready
 
 
 ```js @ts-type={createWindow:()=>void}
-app.lorsquePrêt().alors(() => {
-  créerFenêtre()
+app.whenReady().then(() => {
+  createWindow()
 
-
-  app.on('activer', () => {
-    si (BrowserWindow.getAllWindows().length === 0) createWindow()
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 })
 ```
@@ -284,7 +278,7 @@ Accéder à cette information est trivial à faire dans le processus principal v
 Ils sont dans des processus complètement différents !
 
 
-> Remarque : Si vous avez besoin d'un aperçu plus approfondi des processus Electron, consultez le document [Modèle de Processus][].
+> Remarque : Si vous avez besoin d'un aperçu plus approfondi des processus Electron.
 
 
 C'est ici qu'attacher un script **preload** à votre renderer devient utile.
@@ -296,15 +290,13 @@ Créez un nouveau script nommé `preload.js` comme suit :
 
 ```js
 window.addEventListener('DOMContentLoaded', () => {
-  const replaceText = (sélecteur, texte) => {
+  const replaceText = (selector, text) => {
     const element = document.getElementById(selector)
-    if (element) element.
-}innerText = texte
+    if (element) element.innerText = text
   }
 
-
-  pour (const dépendance de ['chrome', 'node', 'electron']) {
-    remplacerTexte(`${dépendance}-version`, process.versions[dépendance])
+  for (const dependency of ['chrome', 'node', 'electron']) {
+    replaceText(`${dependency}-version`, process.versions[dependency])
   }
 })
 ```
@@ -318,11 +310,10 @@ Pour attacher ce script à votre processus de rendu, passez le chemin de votre s
 
 ```js
 const { app, BrowserWindow } = require('electron')
-// inclure le module 'path' de Node.js en haut de votre fichier
+// include the Node.js 'path' module at the top of your file
 const path = require('node:path')
 
-
-// modifiez votre fonction createWindow() existante
+// modify your existing createWindow() function
 const createWindow = () => {
   const win = new BrowserWindow({
     width: 800,
@@ -331,7 +322,6 @@ const createWindow = () => {
       preload: path.join(__dirname, 'preload.js')
     }
   })
-
 
   win.loadFile('index.html')
 }
@@ -361,14 +351,14 @@ Pour toute interaction avec vos contenus web, vous devez ajouter des scripts à 
 
 ```html
 <script src="./renderer.js"></script>
+```
+
 Le code contenu dans `renderer.js` peut alors utiliser les mêmes APIs JavaScript et outils que vous utilisez pour le développement front-end typique, comme utiliser [`webpack`][webpack] pour regrouper et minifier votre code ou [React][react] pour gérer vos interfaces utilisateur.
 
 
 Le code contenu dans `renderer.js` peut alors utiliser les mêmes API JavaScript et outils que vous utilisez pour le développement front-end typique, comme l'utilisation de [`webpack`][webpack] pour regrouper et minifier votre code ou [React][react] pour gérer vos interfaces utilisateur.
 
 
-[webpack]: https://webpack.js.org
-[react]: https://reactjs.org
 
 
 ### Récapitulatif
@@ -387,13 +377,12 @@ Le code complet est disponible ci-dessous :
 ```js
 // main.js
 
-
-// Modules pour contrôler la vie de l'application et créer une fenêtre de navigateur native
+// Modules to control application life and create native browser window
 const { app, BrowserWindow } = require('electron')
 const path = require('node:path')
 
-
-const createWindow = () => // Créer la fenêtre du navigateur.
+const createWindow = () => {
+  // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
@@ -402,60 +391,50 @@ const createWindow = () => // Créer la fenêtre du navigateur.
     }
   })
 
-
-  // et charger le index.html de l'application.
+  // and load the index.html of the app.
   mainWindow.loadFile('index.html')
 
-
-  // Ouvrir les DevTools.
+  // Open the DevTools.
   // mainWindow.webContents.openDevTools()
 }
 
-
-// Cette méthode sera appelée lorsque Electron aura terminé
-// l'initialisation et sera prêt à créer des fenêtres de navigateur.
-// Certaines API ne peuvent être utilisées qu'après cet événement.
+// This method will be called when Electron has finished
+// initialization and is ready to create browser windows.
+// Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   createWindow()
 
-
-  app.on('activer', () => {
-    // Sur macOS, il est courant de recréer une fenêtre dans l'application lorsque l'icône du dock est cliquée et qu'il n'y a pas d'autres fenêtres ouvertes.
-    si (BrowserWindow.getAllWindows().length === 0) createWindow()
+  app.on('activate', () => {
+    // On macOS it's common to re-create a window in the app when the
+    // dock icon is clicked and there are no other windows open.
+    if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 })
 
-
-// Quitter lorsque toutes les fenêtres sont fermées, sauf sur macOS. Là-bas, il est courant
-// que les applications et leur barre de menu restent actives jusqu'à ce que l'utilisateur quitte
-// explicitement avec Cmd + Q.
+// Quit when all windows are closed, except on macOS. There, it's common
+// for applications and their menu bar to stay active until the user quits
+// explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
 })
 
-
-// Dans ce fichier, vous pouvez inclure le reste du code du processus principal spécifique de votre application. Vous pouvez également les mettre dans des fichiers séparés et les inclure ici.
-```js
-// preload.js 
-Texte à traduire : ```
-
+// In this file you can include the rest of your app's specific main process
+// code. You can also put them in separate files and require them here.
+```
 
 ```js
 // preload.js
-```
 
-
-// Toutes les API Node.js sont disponibles dans le processus de préchargement.
-// Il a le même bac à sable qu'une extension Chrome.
+// All the Node.js APIs are available in the preload process.
+// It has the same sandbox as a Chrome extension.
 window.addEventListener('DOMContentLoaded', () => {
-  const replaceText = (sélecteur, texte) => {
+  const replaceText = (selector, text) => {
     const element = document.getElementById(selector)
     if (element) element.innerText = text
   }
 
-
-  pour (const dépendance de ['chrome', 'node', 'electron']) {
-    remplacerTexte(`${dépendance}-version`, process.versions[dépendance])
+  for (const dependency of ['chrome', 'node', 'electron']) {
+    replaceText(`${dependency}-version`, process.versions[dependency])
   }
 })
 ```
