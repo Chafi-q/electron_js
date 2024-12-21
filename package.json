@@ -1,0 +1,11 @@
+{
+    "name": "hello-world",
+    "version": "1.0.0",
+    "main": "main.js",
+    "dependencies": {
+        "electron": "^33.2.1"
+    },
+    "scripts": {
+    "start": "electron ."
+  }
+}
