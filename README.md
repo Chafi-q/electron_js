@@ -493,46 +493,38 @@ Pour créer un paquet RPM pour Linux, vous devrez [installer ses dépendances sy
 2. Ajoutez Electron Forge comme dépendance de développement de votre application, et utilisez sa commande `import` pour configurer l'ossature de Forge :
 
 
-   ```sh npm2yarn
+   ```shpm2yarn
    npm install --save-dev @electron-forge/cli
    npx electron-forge import
-```
 
+   ✔ Checking your system
+   ✔ Initializing Git Repository
+   ✔ Writing modified package.json file
+   ✔ Installing dependencies
+   ✔ Writing modified package.json file
+   ✔ Fixing .gitignore
 
-   ✔ Vérification de votre système
-   ✔ Initialisation du dépôt Git
-   ✔ Écriture du fichier package.json modifié
-   ✔ Installation des dépendances
-   ✔ Écriture du fichier package.json modifié
-   ✔ Correction du fichier .gitignore
+   We have ATTEMPTED to convert your app to be in a format that electron-forge understands.
 
-
-   Nous avons TENTÉ de convertir votre application dans un format que electron-forge comprend.
-
-
-   Merci d'utiliser "electron-forge" !!!
+   Thanks for using "electron-forge"!!!
    ```
 
-
-3. Créez un distribuable en utilisant la commande `make` de Forge :
-
+3. Create a distributable using Forge's `make` command:
 
    ```sh npm2yarn
    npm run make
 
-
    > my-electron-app@1.0.0 make /my-electron-app
    > electron-forge make
 
-
-   ✔ Vérification de votre système
-   ✔ Résolution de la configuration Forge
-   Nous devons empaqueter votre application avant de pouvoir la créer.
-   ✔ Préparation de l'emballage Application pour l'architecture : x64
-   ✔ Préparation des dépendances natives
-   ✔ Emballage de l'application
-   Création pour les cibles suivantes : zip
-   ✔ Création pour la cible : zip - Sur la plateforme : darwin - Pour l'architecture : x64
+   ✔ Checking your system
+   ✔ Resolving Forge Config
+   We need to package your application before we can make it
+   ✔ Preparing to Package Application for arch: x64
+   ✔ Preparing native dependencies
+   ✔ Packaging Application
+   Making for the following targets: zip
+   ✔ Making for target: zip - On platform: darwin - For arch: x64
    ```
 
 
