@@ -268,7 +268,7 @@ app.whenReady().then(() => {
 > Remarque : À ce stade, vos contrôles de fenêtre devraient être entièrement fonctionnels !
 
 
-### Accéder à Node.js depuis le rendu avec un script de préchargement
+### Accéder à Node.js depuis le renderer  avec un script de préchargement
 
 
 Maintenant, la dernière chose à faire est d'imprimer les numéros de version d'Electron et de ses dépendances sur votre page web.
@@ -474,7 +474,7 @@ Pour résumer toutes les étapes que nous avons effectuées :
 * Nous avons initialisé une application Node.js et ajouté Electron comme dépendance.
 * Nous avons créé un script `main.js` qui exécute notre processus principal, qui contrôle notre application et s'exécute dans un environnement Node.js. Dans ce script, nous avons utilisé les modules `app` et `BrowserWindow` d'Electron pour créer une fenêtre de navigateur qui affiche du contenu web dans un processus séparé (le renderer). Afin d'accéder à certaines fonctionnalités de Node.js dans le renderer, nous avons attaché un script de préchargement à notre constructeur `BrowserWindow`.
 
-## Emballez et distribuez votre application
+## Package et distribuez votre application
 
 
 La manière la plus rapide de distribuer votre application nouvellement créée est d'utiliser [Electron Forge](https://www.electronforge.io).
